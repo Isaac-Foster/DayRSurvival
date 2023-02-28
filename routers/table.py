@@ -45,7 +45,6 @@ async def get_hunts(limit: int = 0, page: int = 0):
     return {"hunts": list_response}
 
 
-
 @router.post("/register/{name}")
 async def register_item(name: str, item: Item):
 
@@ -54,10 +53,9 @@ async def register_item(name: str, item: Item):
     if name not in ["hunt", "item"]:
         return {"error": f"{name} is not exists"}
     
-    
     return {"status": "Item is add in database", **item.__dict__}
 
 
 @router.post("/calc")
-async def calc_items(data: Items):
-    return data.sum()
+async def calc_items(items: Items):
+    return items.sum()

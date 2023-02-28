@@ -34,8 +34,10 @@ class Items:
     def __post_init__(self):
         self.items = [CItem(**x) for x in self.items]
 
+
     def sum(self):
         values = []
+        
         for item in self.items:
 
             colum = str(item.type) + "s"

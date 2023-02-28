@@ -1,10 +1,12 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 
 
-class User(BaseModel):
+@dataclass
+class User:
     login: str
     passwd: str
 
 
+@dataclass
 class UserMongo(User):
     type: str

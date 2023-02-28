@@ -15,7 +15,7 @@ router = APIRouter(
 
 @router.post("/login")
 async def login_user(user: User):
-    result = find_one(user.dict())
+    result = find_one(user.__dict__)
 
     if result:
         return {"message": "login successful"}
@@ -25,10 +25,10 @@ async def login_user(user: User):
 
 @router.post("/register")
 async def login_user(user: User):
-    result = find_one(user.dict())
-
+    del user.__dict__["__initialised__"]
+    result = find_one(user.__dict__)
     if not result:
-        insert_one(user)
+        insert_one(user.__dict__)
         return {"message": "login created successful"}
 
     return {"message": "account is exist"}

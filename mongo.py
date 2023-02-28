@@ -3,11 +3,10 @@ import pymongo
 
 
 from models.users import UserMongo
+from config import url
 
 # CONNECT db
-connect = pymongo.MongoClient(
-    f"mongodb+srv://m3coder:Soberano21@cluster0.mlgcojj.mongodb.net/?retryWrites=true&w=majority"
-)
+connect = pymongo.MongoClient(url)
 
 cur = connect.database.users
     

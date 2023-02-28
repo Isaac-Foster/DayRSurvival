@@ -1,3 +1,4 @@
 __pycache__
 day_r.db*
 .venv
+config.py
