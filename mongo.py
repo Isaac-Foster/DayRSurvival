@@ -2,9 +2,11 @@ from bson.objectid import ObjectId
 import pymongo
 
 
+from models.users import UserMongo
+
 # CONNECT db
 connect = pymongo.MongoClient(
-    f"mongodb+srv://m3coder:Soberano21@cluster.lhnreq3.mongodb.net/?retryWrites=true&w=majority"
+    f"mongodb+srv://m3coder:Soberano21@cluster0.mlgcojj.mongodb.net/?retryWrites=true&w=majority"
 )
 
 cur = connect.database.users

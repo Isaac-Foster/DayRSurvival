@@ -1,14 +1,10 @@
-from dataclasses import dataclass
-from enum import Enum
+from pydantic import BaseModel
 
 
-class TypeUser(Enum):
-    user = "user"
-    admin = "admin"
-
-
-@dataclass
-class User:
+class User(BaseModel):
     login: str
     passwd: str
-    type: TypeUser
+
+
+class UserMongo(User):
+    type: str
