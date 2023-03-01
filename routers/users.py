@@ -14,7 +14,9 @@ router = APIRouter(
 
 
 @router.post("/login")
-async def login_user(user: User):
+async def login(user: User):
+    user.__dict__.pop("__initialised__")
+
     result = find_one(user.__dict__)
 
     if result:
@@ -24,8 +26,9 @@ async def login_user(user: User):
 
 
 @router.post("/register")
-async def login_user(user: User):
-    del user.__dict__["__initialised__"]
+async def register(user: User):
+    user.__dict__.pop("__initialised__")
+
     result = find_one(user.__dict__)
     if not result:
         insert_one(user.__dict__)

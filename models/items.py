@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from pydantic import BaseModel
+from pydantic.dataclasses import dataclass
 from database import cur
 
 
@@ -18,8 +17,7 @@ class ItemDB(Item):
 @dataclass
 class CItem:
     name: str
-    amount: str
-    type: str
+    amount: int
 
 
 @dataclass
@@ -39,16 +37,17 @@ class Items:
         values = []
         
         for item in self.items:
+            item.__dict__.pop("__initialised__")
 
-            colum = str(item.type) + "s"
-            
-            amount, value = cur.execute(
-                f"SELECT amount, value FROM {colum} WHERE name=?",
+            amount, value, type_item = cur.execute(
+                f"SELECT amount, value, type FROM items WHERE name=?",
                 [item.name]
             ).fetchone()
 
             item.value = ((item.amount // amount) * value)
-
-            values.append(Calc_Item(**item.__dict__).__dict__)
+            item.type = type_item
+            calc = Calc_Item(**item.__dict__).__dict__
+            calc.pop("__initialised__")
+            values.append(calc)
 
         return {"items": values, "total": sum([x["value"] for x in values])}
