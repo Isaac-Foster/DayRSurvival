@@ -1,28 +1,28 @@
-from pydantic.dataclasses import dataclass
-from database import cur
+from dataclasses import dataclass, field
+from database import cur, commit
 
+from typing import Optional
 
 @dataclass
 class Item:
     name: str
-    amount: int
-    value: int
+    amount: int | None = None
+    value: int | None = None
+    type: str | None = None
+
+    def insert(self):
+        cur.execute(
+            "INSERT OR IGNORE INTO items(name, amount, value, type)"
+            " VALUES(?, ?, ?, ?)",
+            (self.name.strip(), self.amount, self.value, self.type)
+        )
+        commit()
 
 
 @dataclass
-class ItemDB(Item):
-    type: str
-
-
-@dataclass
-class CItem:
+class CalItem:
     name: str
     amount: int
-
-
-@dataclass
-class Calc_Item(ItemDB):
-    ...
 
 
 @dataclass
@@ -30,24 +30,20 @@ class Items:
     items: list
 
     def __post_init__(self):
-        self.items = [CItem(**x) for x in self.items]
+        self.items = [Item(**x) for x in self.items]
 
 
     def sum(self):
         values = []
-        
+        #print(self.items)
         for item in self.items:
-            item.__dict__.pop("__initialised__")
-
             amount, value, type_item = cur.execute(
-                f"SELECT amount, value, type FROM items WHERE name=?",
-                [item.name]
-            ).fetchone()
+                    f"SELECT amount, value, type FROM items WHERE name LIKE ?",
+                    [item.name]
+                ).fetchone()
 
             item.value = ((item.amount // amount) * value)
             item.type = type_item
-            calc = Calc_Item(**item.__dict__).__dict__
-            calc.pop("__initialised__")
-            values.append(calc)
+            values.append(item.__dict__)
 
         return {"items": values, "total": sum([x["value"] for x in values])}

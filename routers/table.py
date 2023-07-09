@@ -1,16 +1,16 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Response
 from fastapi.datastructures import FormData
 
 from database import cur
 from models.items import (
-    Item, 
-    ItemDB, 
-    Items
+    Item,  
+    Items,
     )
 
 router = APIRouter(
     prefix="/table",
 )
+
 
 def sql_items(limit: int, page: int, type_item: str):
     if type_item == "all":
@@ -25,30 +25,32 @@ def sql_items(limit: int, page: int, type_item: str):
         ).fetchall()       
 
 
-@router.get("/{type_item}", tags=["table"])
-async def get_items(type_item: str , limit: int = 0, page: int = 0):
+@router.get("/", tags=["table"])
+async def get_items(type_item: str = "all", limit: int = 0, page: int = 0):
     if type_item not in ("all", "hunt", "item"):
         return {"error": f"type item '{type_item}' not exists"} 
     
     list_items = sql_items(limit, page, type_item)
-    
-    list_response = [ItemDB(*x).__dict__ for x in list_items]
 
-    return {"items": list_response}
+    list_response = [Item(*x).__dict__ for x in list_items]
+
+    return {
+        "amount": len(list_response),
+        "items": list_response
+        }
 
 
-@router.post("/calc", tags=["table"])
-async def calc_items(items: Items):
+@router.post("/calculator", tags=["table"])
+async def calculator(items: Items, response: Response):
+    response.status_code = 200
     return items.sum()
 
 
-@router.post("/register/{type_item}", tags=["admins"])
-async def register_item(type_item: str, item: Item):
-
-    item.__dict__.pop("__initialised__")
-
-    if type_item not in ["hunt", "item"]:
-        return {"error": f"{type_item} is not exists"}
+@router.post("/register", tags=["admins"])
+async def register_item(item: Item):
+    
+    if item.type not in ["hunt", "item"]:
+        return {"error": f"{item.type} is not exists"}
     
     return {"status": "Item is add in database", **item.__dict__}
 

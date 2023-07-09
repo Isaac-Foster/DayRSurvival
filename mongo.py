@@ -1,12 +1,13 @@
 from bson.objectid import ObjectId
-import pymongo
+import pymongo, dotenv, os
 
 
 from models.users import UserMongo
-from config import url
+
+dotenv.load_dotenv(dotenv.find_dotenv())
 
 # CONNECT db
-connect = pymongo.MongoClient(url)
+connect = pymongo.MongoClient(os.getenv("url"))
 
 cur = connect.database.users
     
@@ -28,4 +29,4 @@ def insert_one(*args, **kwargs) -> None:
 
 
 def update_data(data: dict, update: dict):
-    return cur.update_one(data, {'$set': update}, upsert=True)
+    return cur.update_one(data, {'$set': update})

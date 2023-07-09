@@ -1,0 +1,39 @@
+body {
+    background-color:#000000 !important;
+}
+
+main {
+    padding: 10px;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-direction:  row;
+    display: flex;
+    min-width: 667px;
+    max-width: 100%;
+    min-height: 600px;
+    max-height: 100%;
+}
+
+button {
+    margin: 2%;
+    width: 95%;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0.3%;
+    width: 20%;
+    background-color: rgb(77, 80, 80) !important;
+    margin-right: 0.7%;
+    align-items: center;
+    border-radius: 8px;
+
+}
+
+
+.screen {
+    border-radius: 8px;
+    width: 80%;
+    background-color: rgb(65, 68, 77);
+}
