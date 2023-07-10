@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Request, Response
-from fastapi.datastructures import FormData
+from fastapi import APIRouter, Response
 
 from database import cur
 from models.items import (
     Item,  
     Items,
+    Craft
     )
 
 router = APIRouter(
@@ -32,7 +32,7 @@ async def get_items(type_item: str = "all", limit: int = 0, page: int = 0):
     
     list_items = sql_items(limit, page, type_item)
 
-    list_response = [Item(*x).__dict__ for x in list_items]
+    list_response = [Item(*x) for x in list_items]
 
     return {
         "amount": len(list_response),
@@ -46,11 +46,17 @@ async def calculator(items: Items, response: Response):
     return items.sum()
 
 
+@router.post("/craft", tags=["table"])
+async def crafts(craft: Craft):
+    craft.make_items()
+    return {"message": "success"}
+
+
 @router.post("/register", tags=["admins"])
 async def register_item(item: Item):
     
     if item.type not in ["hunt", "item"]:
-        return {"error": f"{item.type} is not exists"}
+        return {"error": f"field type `{item.type}` is not exists"}
     
     return {"status": "Item is add in database", **item.__dict__}
 

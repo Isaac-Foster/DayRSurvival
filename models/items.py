@@ -1,7 +1,20 @@
-from dataclasses import dataclass, field
+from pydantic.dataclasses import dataclass
 from database import cur, commit
 
-from typing import Optional
+
+def get_values(self):
+    values = []
+    for item in self.items:
+        amount, value, type_item = cur.execute(
+                f"SELECT amount, value, type FROM items WHERE name LIKE ?",
+                [item.name]
+            ).fetchone()
+
+        item.value = ((item.amount // amount) * value)
+        item.type = type_item
+        values.append(item)
+    return values
+
 
 @dataclass
 class Item:
@@ -27,23 +40,18 @@ class CalItem:
 
 @dataclass
 class Items:
-    items: list
-
-    def __post_init__(self):
-        self.items = [Item(**x) for x in self.items]
-
+    items: list[CalItem] | list[Item]
 
     def sum(self):
-        values = []
-        #print(self.items)
-        for item in self.items:
-            amount, value, type_item = cur.execute(
-                    f"SELECT amount, value, type FROM items WHERE name LIKE ?",
-                    [item.name]
-                ).fetchone()
-
-            item.value = ((item.amount // amount) * value)
-            item.type = type_item
-            values.append(item.__dict__)
+        values = get_values(self)
 
         return {"items": values, "total": sum([x["value"] for x in values])}
+
+
+@dataclass
+class Craft:
+    crafts: list[CalItem]
+
+    def make_items(self):
+        for item in self.crafts:
+            print(item, type(item))

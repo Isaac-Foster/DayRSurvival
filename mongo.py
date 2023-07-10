@@ -2,8 +2,6 @@ from bson.objectid import ObjectId
 import pymongo, dotenv, os
 
 
-from models.users import UserMongo
-
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 # CONNECT db

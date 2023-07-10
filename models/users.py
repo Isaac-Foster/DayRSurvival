@@ -1,12 +1,10 @@
 from dataclasses import dataclass
-
+from base64 import b64encode
 
 @dataclass
 class User:
     login: str
     passwd: str
 
-
-@dataclass
-class UserMongo(User):
-    type: str
+    def __post_init__(self):
+        ...
