@@ -4,7 +4,7 @@ from database import cur
 from models.items import (
     Item,  
     Items,
-    Craft
+    CraftCal
     )
 
 router = APIRouter(
@@ -44,12 +44,6 @@ async def get_items(type_item: str = "all", limit: int = 0, page: int = 0):
 async def calculator(items: Items, response: Response):
     response.status_code = 200
     return items.sum()
-
-
-@router.post("/craft", tags=["table"])
-async def crafts(craft: Craft):
-    craft.make_items()
-    return {"message": "success"}
 
 
 @router.post("/register", tags=["admins"])

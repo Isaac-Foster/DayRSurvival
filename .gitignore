@@ -3,3 +3,4 @@ day_r.db*
 .venv
 config.py
 .env
+contas.py

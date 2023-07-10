@@ -8,7 +8,8 @@ dotenv.load_dotenv(dotenv.find_dotenv())
 connect = pymongo.MongoClient(os.getenv("url"))
 
 cur = connect.database.users
-    
+
+
 
 def find_one(*args, **kwargs) -> None | dict:
     query_result = cur.find_one(args[0] if args else kwargs)

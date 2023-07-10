@@ -3,7 +3,7 @@ from string import digits
 
 
 from fastapi import APIRouter
-from models.users import User
+from models.users import User, UserMongo
 
 
 from mongo import (
@@ -19,20 +19,17 @@ router = APIRouter(
 )
 
 
-def generate_id():
-    while 1:
-        _id = int("".join([choice(digits) for _ in range(16)]))
-
-        if not find_one(_id=_id):
-            return _id
-
-
 @router.post("/login")
 async def login(user: User):
-    result = find_one(user.__dict__)
+    
+    account = find_one(dict(login=user.login))
 
-    if result:
-        return {"message": "login successful"}
+    if account:
+
+        if UserMongo(**account).passwd == user.passwd:
+            return {"message": "login successful"}
+
+        return {"message": "Your password is not correct"}
 
     return {"message": "account not found"}
 
@@ -42,8 +39,8 @@ async def register(user: User):
     
     result = find_one(user.__dict__)
     if not result:
-        user._id = generate_id()
         user.type = "standard"
+
         insert_one(user.__dict__)
         return {"message": "login created successful"}
 
