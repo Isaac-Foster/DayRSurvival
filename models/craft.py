@@ -34,9 +34,9 @@ class Craft(Name):
 
 
     def __to_dict__(self):
-        self.drop = self.drop.__dict__
-        self.resources = [x.__dict__  for x in self.resources]
-        return self.__dict__
+        drop = self.drop.__dict__
+        resources = [x.__dict__  for x in self.resources]
+        return Craft(name=self.name, drop=drop, resources=resources).__dict__
 
 
 @dataclass
