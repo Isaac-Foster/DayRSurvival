@@ -1,17 +1,16 @@
 from fastapi import APIRouter, Response
 
-from models.items import Craft, Name, CraftCal
-from mongo import connect
+from models.craft import Craft, Name, CraftCal
+from mongo import insert_one
 
 router = APIRouter(
     prefix="/craft",
 )
 
-cur = connect.database.crafts
 
 @router.post("/register", tags=["admins"])
 async def crafts(craft: Craft):
-    cur.insert_one(craft.__to_dict__())
+    insert_one("crafts", craft.__to_dict__())
     return craft
 
 

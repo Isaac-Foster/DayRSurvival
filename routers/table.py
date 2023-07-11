@@ -4,7 +4,6 @@ from database import cur
 from models.items import (
     Item,  
     Items,
-    CraftCal
     )
 
 router = APIRouter(

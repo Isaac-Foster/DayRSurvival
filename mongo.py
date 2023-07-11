@@ -7,25 +7,41 @@ dotenv.load_dotenv(dotenv.find_dotenv())
 # CONNECT db
 connect = pymongo.MongoClient(os.getenv("url"))
 
-cur = connect.database.users
+cur = connect.database
 
 
+def find_one(collection: str, data: dict) -> dict | None:
+    """
+    This argument `collection` is refer for collection access 
+    and use in database
 
-def find_one(*args, **kwargs) -> None | dict:
-    query_result = cur.find_one(args[0] if args else kwargs)
-    if query_result:
-        return query_result
-    return None
+    This function is used for query using argument type
+    dict `data` in search in mongoDb
 
-
-def insert_one(*args, **kwargs) -> None:
-    response = (
-        dict(success=(cur.insert_one(args[0] if args else kwargs)) != None)
-        if not find_one(*args or kwargs)
-        else dict(error="existing User")
-        )
-    return response
+    Your return if find `data` is dict if not None
+    """
+    return cur[collection].find_one(data)
 
 
-def update_data(data: dict, update: dict):
-    return cur.update_one(data, {'$set': update})
+def insert_one(collection: str, data: dict) -> None:
+    """
+    This argument `collection` is refer for collection access 
+    and use in database
+
+    This function is used for insert `data` argument
+    type `dict` content data the `object` type user or others
+    """
+
+    cur[collection].insert_one(data)
+
+
+def update_data(collection: str, data: dict, **kwargs):
+    """
+    This argument `collection` is refer for collection access 
+    and use in database
+    
+    This function is used for update data in database 
+    if data is exists in database
+    """
+    cur[collection].update_one(data, {'$set': {**kwargs}})
+

@@ -22,7 +22,7 @@ router = APIRouter(
 @router.post("/login")
 async def login(user: User):
     
-    account = find_one(dict(login=user.login))
+    account = find_one("users", dict(login=user.login))
 
     if account:
 
@@ -37,11 +37,11 @@ async def login(user: User):
 @router.post("/register")
 async def register(user: User):
     
-    result = find_one(user.__dict__)
+    result = find_one("users", user.__dict__)
     if not result:
         user.type = "standard"
 
-        insert_one(user.__dict__)
+        insert_one("users", user.__dict__)
         return {"message": "login created successful"}
 
     return {"message": "account is exist"}
