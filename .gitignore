@@ -4,3 +4,4 @@ day_r.db*
 config.py
 .env
 contas.py
+test*.py

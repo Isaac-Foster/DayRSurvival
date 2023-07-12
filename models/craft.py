@@ -70,6 +70,7 @@ class CraftCal:
                     cost["max"].append(
                         CalItem(resource.name, mx)
                     )
+                    
             cost = {k:v for k,v in cost.items() if v}
             craft.drop = {k: v for k, v in craft.drop.__dict__.items() if v}
             craft.resources = cost

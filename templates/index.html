@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/index.css">
+    
+</head>
+<body>
+
+    <main>
+    
+      <nav id="pages">
+        <button type="button" class="btn btn-outline-light opacity-50" id="nav">home</button>
+        <button type="button" class="btn btn-outline-light opacity-50" id="nav">smart</button>
+        <button type="button" class="btn btn-outline-light opacity-50" id="nav">hunt</button>
+        <button type="button" class="btn btn-outline-light opacity-50" id="nav">craft</button>
+        <button type="button" class="btn btn-outline-light opacity-50" id="nav">cal items</button>
+        <button type="button" class="btn btn-outline-light opacity-50" id="nav">cal craft</button>
+
+      </nav>
+
+      <div class="screen">
+        <nav class="navbar body-tertiary" id="search">
+          <div class="container-fluid">
+            <a class="navbar-brand">Navbar</a>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </nav>
+
+        <table class="table table-striped-columns">
+            <thead>
+                <tr>
+                    <th scope="col">Table</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">amount</th>
+                    <th scope="col">value</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+        </table>
+        <nav id="nav-page">
+            <button type="button" class="btn btn-dark" id="nav-btn"><<</button>
+            <button type="button" class="btn btn-dark" id="nav-btn">1</button>
+            <button type="button" class="btn btn-dark" id="nav-btn">2</button>
+            <button type="button" class="btn btn-dark" id="nav-btn">3</button>
+            <button type="button" class="btn btn-dark" id="nav-btn">4</button>
+            <button type="button" class="btn btn-dark" id="nav-btn">>></button>
+        </nav>
+      </div>
+    </main>
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="/static/index.js"></script>
+
+    <!-- JQuery -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</body>
+</html>

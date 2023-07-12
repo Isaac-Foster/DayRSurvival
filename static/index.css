@@ -14,26 +14,59 @@ main {
     max-height: 100%;
 }
 
-button {
+
+table {
+    height: 75%;
+    border: solid 3px black;
+    border-radius: 5px !important;
+}
+
+tbody {
+    height: 90%;
+}
+
+.screen {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2%;
+    border-radius: 8px;
+    width: 80%;
+    background-color: rgb(65, 68, 77) !important;
+}
+
+.btn {
     margin: 2%;
     width: 95%;
 }
 
-nav {
-    display: flex;
-    flex-direction: column;
-    padding: 0.3%;
-    width: 20%;
-    background-color: rgb(77, 80, 80) !important;
-    margin-right: 0.7%;
-    align-items: center;
-    border-radius: 8px;
-
+#nav {
+    height: 6.5%;
 }
 
+#nav-page {
+    margin: 0.4%;
+    width: 95%;
+}
 
-.screen {
+#pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.3%;
+    width: 20%;
+    background-color: rgb(65, 68, 77) !important;
+    margin-right: 0.7%;
     border-radius: 8px;
-    width: 80%;
-    background-color: rgb(65, 68, 77);
+    padding-top: 0.7rem;
+}
+
+#search {
+    margin: 4px;
+}
+
+#nav-page {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 95%;
 }
