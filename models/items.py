@@ -34,13 +34,22 @@ class Item(Name):
     value: int | None = None
     type: str | None = None
 
-    def insert(self):
-        cur.execute(
-            "INSERT OR IGNORE INTO items(name, amount, value, type)"
-            " VALUES(?, ?, ?, ?)",
-            (self.name.strip(), self.amount, self.value, self.type)
-        )
-        commit()
+    def insert(self) -> dict:
+        if self.type not in ["hunt", "item"]:
+            return {"error": f"field type `{self.type}` is not exists"}
+    
+        is_exists = cur.execute("SELECT * FROM items WHERE name=?", [self.name])
+
+        if not is_exists:
+            cur.execute(
+                "INSERT OR IGNORE INTO items(name, amount, value, type)"
+                " VALUES(?, ?, ?, ?)",
+                (self.name.strip(), self.amount, self.value, self.type)
+            )
+            commit()
+            return {"message": "Item is add in database", **self.__dict__}
+        
+        return {"message": f"This {self.name} is exists in database"}
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, Request
 
 from database import cur
 from models.items import (
@@ -25,7 +25,8 @@ def sql_items(limit: int, page: int, type_item: str):
 
 
 @router.get("/", tags=["table"])
-async def get_items(type_item: str = "all", limit: int = 0, page: int = 0):
+async def get_items(request: Request, type_item: str = "all", limit: int = 0, page: int = 0):
+    print(request.cookies.get("access_token"))
     if type_item not in ("all", "hunt", "item"):
         return {"error": f"type item '{type_item}' not exists"} 
     
@@ -47,11 +48,7 @@ async def calculator(items: Items, response: Response):
 
 @router.post("/register", tags=["admins"])
 async def register_item(item: Item):
-    
-    if item.type not in ["hunt", "item"]:
-        return {"error": f"field type `{item.type}` is not exists"}
-    
-    return {"status": "Item is add in database", **item.__dict__}
+    return item.insert()
 
 
 @router.put("/update", tags=["admins"])

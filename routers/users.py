@@ -1,16 +1,8 @@
-from random import choice
-from string import digits
+from datetime import datetime, timedelta
+from uuid import uuid4
 
-
-from fastapi import APIRouter
+from fastapi import APIRouter, Response, Request
 from models.users import User, UserMongo
-
-
-from mongo import (
-    find_one,
-    insert_one, 
-    update_data
-    )
 
 
 router = APIRouter(
@@ -20,28 +12,21 @@ router = APIRouter(
 
 
 @router.post("/login")
-async def login(user: User):
+async def login(user: User, response: Response, request: Request):
+    resp =  user.auth()
     
-    account = find_one("users", dict(login=user.login))
+    expire = (datetime.utcnow() + timedelta(seconds=15))
 
-    if account:
-
-        if UserMongo(**account).passwd == user.passwd:
-            return {"message": "login successful"}
-
-        return {"message": "Your password is not correct"}
-
-    return {"message": "account not found"}
+    if resp.status:
+        response.set_cookie(
+            key="access_token",
+            value=uuid4(),
+            expires=expire.strftime("%a, %d %b %Y %H:%M:%S GMT")
+        )
+    return resp.response
 
 
 @router.post("/register")
 async def register(user: User):
-    
-    result = find_one("users", user.__dict__)
-    if not result:
-        user.type = "standard"
-
-        insert_one("users", user.__dict__)
-        return {"message": "login created successful"}
-
-    return {"message": "account is exist"}
+    resp = user.register()
+    return resp.response
