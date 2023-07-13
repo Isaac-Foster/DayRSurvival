@@ -5,3 +5,4 @@ config.py
 .env
 contas.py
 test*.py
+.vscode
